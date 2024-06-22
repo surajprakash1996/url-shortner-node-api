@@ -1,0 +1,39 @@
+
+POST REQUEST =>  api/url/
+pass the data in ReportBody
+{
+    url: your_url
+}
+
+
+
+==============================================================
+
+
+GET REQUEST api/url/analytics/:shordId
+ pass short id in url eg   -    api/url/analytics/gu_Uwdbdmd
+
+
+
+================================================================
+
+GET api/url/shortid
+
+pass short id in url eg -   api/url/gu_Uwdbdmd
+
+It will redirect on original url
+
+
+
+===============================================================
+
+GET api/url/remove-all 
+
+it will remove all short ids
+
+
+
+
+
+
+

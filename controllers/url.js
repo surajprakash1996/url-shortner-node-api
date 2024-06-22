@@ -35,9 +35,11 @@ async function handleGenerateShortUrl(req, res) {
     catch (err) {
         const data = `Error - handleGenerateShortUrl | Message - ${err.message} | Time - ${Date.now()}`;
         logData("errors.txt", data);
+        return res.status(500).json({
+            error: err.message
+        });
     }
 }
-
 
 async function handleGetAnalytics(req, res) {
     if (!req.params.shortid) {
@@ -66,9 +68,11 @@ async function handleGetAnalytics(req, res) {
     catch (err) {
         const data = `Error - handleRedirectUrl | Message - ${err.message} | Time - ${Date.now()}`;
         logData("errors.txt", data);
+        return res.status(500).json({
+            error: err.message
+        });
     }
 }
-
 
 async function handleRedirectUrl(req, res) {
 
@@ -88,24 +92,52 @@ async function handleRedirectUrl(req, res) {
             }
         });
 
-        if (!updatedData) {
-            return res.status(500).json({
-                error: "Visior count not updated."
-            })
-        }
 
-        res.redirect(updatedData.redirectUrl);
+        return res.status(200).json({
+            data: updatedData
+        })
+
     }
     catch (err) {
         const data = `Error - handleRedirectUrl | Message - ${err.message} | Time - ${Date.now()}`;
         logData("errors.txt", data);
+        return res.status(500).json({
+            error: err.message
+        });
     }
 
+}
+
+async function handleRemoveAllShortIds(req, res) {
+    try {
+        
+        const data = await UrlModel.deleteMany({});
+
+        if( ! data ) {
+            return res.status(400).json({
+               message : "All data is not deleted."
+            })
+        }
+
+        return res.status(200).json({
+            message: 'Removed all shortids'
+        })
+    
+
+    }
+    catch (err) {
+        const data = `Error - handleRemoveAllShortIds | Message - ${err.message} | Time - ${Date.now()}`;
+        logData("errors.txt", data);
+        return res.status(500).json({
+            error: err.message
+        });
+    }
 }
 
 
 module.exports = {
     handleGenerateShortUrl,
     handleGetAnalytics,
-    handleRedirectUrl
+    handleRedirectUrl,
+    handleRemoveAllShortIds
 }
